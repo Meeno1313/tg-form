@@ -274,11 +274,10 @@
   <script>
   const tg = window.Telegram.WebApp;
 
-  const submitBtn = document.querySelector('.submit');
-
-  submitBtn.addEventListener('click', function(e) {
+  document.querySelector('.submit').addEventListener('click', function(e) {
     e.preventDefault();
 
+    // Сбор данных, например
     const getSelected = (selector) => {
       return Array.from(document.querySelectorAll(selector + ' .button-tile.selected'))
                   .map(el => el.textContent.trim());
@@ -297,22 +296,20 @@
       consent: document.querySelector('input[type="checkbox"]').checked
     };
 
-    if (!data.parent || !data.phone || !data.age) {
-      alert("❗ Пожалуйста, заполните обязательные поля: ФИО, телефон и возраст.");
-      return;
-    }
-
     if (!data.consent) {
       alert("❗ Необходимо дать согласие на обработку персональных данных.");
       return;
     }
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Отправка...";
-
+    // Отправляем данные в бота
     tg.sendData(JSON.stringify(data));
-    tg.close();
+
+    // Закрываем WebApp с небольшой задержкой, чтобы данные успели отправиться
+    setTimeout(() => {
+      tg.close();
+    }, 500);
   });
 </script>
+
 </body>
 </html>
