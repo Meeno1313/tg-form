@@ -272,37 +272,52 @@
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script>
-    const tg = window.Telegram.WebApp;
+  const tg = window.Telegram.WebApp;
 
-    document.querySelector('.submit').addEventListener('click', function(e) {
-      e.preventDefault();
+  const submitBtn = document.querySelector('.submit');
 
-      const getSelected = (selector) => {
-        return Array.from(document.querySelectorAll(selector + ' .button-tile.selected'))
-                    .map(el => el.textContent.trim());
-      };
+  submitBtn.addEventListener('click', function(e) {
+    e.preventDefault();
 
-      const data = {
-        parent: document.querySelectorAll('input')[0].value,
-        phone: document.querySelectorAll('input')[1].value,
-        age: document.querySelectorAll('input')[2].value,
-        contraindications: document.querySelectorAll('textarea')[0].value,
-        sport_experience: document.querySelectorAll('textarea')[1].value,
-        goals: getSelected('#goals'),
-        days: getSelected('#days'),
-        source: getSelected('#source'),
-        comment: document.querySelectorAll('textarea')[2].value,
-        consent: document.querySelector('input[type="checkbox"]').checked
-      };
+    const getSelected = (selector) => {
+      return Array.from(document.querySelectorAll(selector + ' .button-tile.selected'))
+                  .map(el => el.textContent.trim());
+    };
 
-      if (!data.consent) {
-        alert("❗ Необходимо дать согласие на обработку персональных данных.");
-        return;
-      }
+    const data = {
+      parent: document.querySelectorAll('input')[0].value.trim(),
+      phone: document.querySelectorAll('input')[1].value.trim(),
+      age: document.querySelectorAll('input')[2].value.trim(),
+      contraindications: document.querySelectorAll('textarea')[0].value.trim(),
+      sport_experience: document.querySelectorAll('textarea')[1].value.trim(),
+      goals: getSelected('#goals'),
+      days: getSelected('#days'),
+      source: getSelected('#source'),
+      comment: document.querySelectorAll('textarea')[2].value.trim(),
+      consent: document.querySelector('input[type="checkbox"]').checked
+    };
 
-      tg.sendData(JSON.stringify(data));
-      setTimeout(() => tg.close(), 300);
-    });
-  </script>
+    if (!data.parent || !data.phone || !data.age) {
+      alert("❗ Пожалуйста, заполните обязательные поля: ФИО, телефон и возраст.");
+      return;
+    }
+
+    if (!data.consent) {
+      alert("❗ Необходимо дать согласие на обработку персональных данных.");
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Отправка...";
+
+    // Отправляем данные в Telegram Web App
+    tg.sendData(JSON.stringify(data));
+
+    // Даём задержку, чтобы отправка успела завершиться
+    setTimeout(() => {
+      tg.close();
+    }, 500); // полсекунды задержки
+  });
+</script>
 </body>
 </html>
