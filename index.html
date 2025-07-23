@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -112,11 +113,12 @@
   }
 
   .button-tile {
-    text-align: center;
+  text-align: center;
     padding: 12px;
     border-radius: 12px;
     background: #e3f2fd;
     color: #333;
+    text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 500;
@@ -206,15 +208,6 @@
       <img src="https://i.ibb.co/TxRVvjpq/IMG-20250708-214806-835.png" alt="Логотип" />
     </div>
     <h2>📋 Запись на занятия</h2>
-
-    <!-- Три стартовые кнопки, которые показываем/скрываем -->
-    <div id="mainButtons" style="display: block; margin-bottom: 20px;">
-      <div class="button-tile">Кнопка 1</div>
-      <div class="button-tile">Кнопка 2</div>
-      <div class="button-tile">Кнопка 3</div>
-    </div>
-
-    <!-- Форма -->
     <form>
       <label>ФИО родителя (законного представителя):</label>
       <input type="text" required />
@@ -269,58 +262,19 @@
 
       <button type="submit" class="submit">Записаться</button>
     </form>
-
-    <!-- Блок сообщения об успехе с кнопкой "Главное меню" -->
-    <div id="successMessage" style="display:none; text-align:center; margin-top: 20px;">
-      <p style="font-size: 20px; font-weight: bold; color: #2c3e50;">
-        Отлично!<br>
-        Вы успешно записались на пробное занятие :)<br>
-        Ваша анкета была отправлена ЙоуЧуваку ( o Y o )
-      </p>
-      <button id="mainMenuBtn" style="
-        margin-top: 15px;
-        padding: 12px 24px;
-        font-size: 18px;
-        background: #42a5f5;
-        color: white;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-      ">Главное меню</button>
-    </div>
-
   </div>
 
   <script>
-    // Обработка выбора кнопок в группах
-    function enforceSingleSelection(groupId) {
-      const group = document.querySelector(`#${groupId}`);
-      group.querySelectorAll('.button-tile').forEach(tile => {
-        tile.addEventListener('click', () => {
-          group.querySelectorAll('.button-tile').forEach(btn => btn.classList.remove('selected'));
-          tile.classList.add('selected');
-        });
-      });
-    }
-
-    // Одиночный выбор
-    enforceSingleSelection('days');
-    enforceSingleSelection('source');
-
-    // Множественный выбор для целей
-    const multiTiles = document.querySelectorAll('#goals .button-tile');
-    multiTiles.forEach(tile => {
+    document.querySelectorAll('.button-tile').forEach(tile => {
       tile.addEventListener('click', () => {
         tile.classList.toggle('selected');
       });
     });
+  </script>
 
-    // Обработка кнопок вне формы (3 стартовые) - если нужно
-    // Можно добавить аналогично, если они функциональны
-
-    // Отправка формы
-    const tg = window.Telegram?.WebApp || null;
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    const tg = window.Telegram.WebApp;
 
     document.querySelector('.submit').addEventListener('click', function(e) {
       e.preventDefault();
@@ -348,40 +302,62 @@
         return;
       }
 
-      if (tg) {
-        tg.sendData(JSON.stringify(data));
-        tg.close();
-      }
-
-      // Скрываем форму и стартовые кнопки, показываем сообщение об успехе
-      document.querySelector('form').style.display = 'none';
-      document.getElementById('mainButtons').style.display = 'none';
-      document.getElementById('successMessage').style.display = 'block';
+      tg.sendData(JSON.stringify(data));
+      tg.close();
     });
-
-    // Кнопка "Главное меню" возвращает к старту
-    document.getElementById('mainMenuBtn').addEventListener('click', () => {
-      // Скрываем сообщение
-      document.getElementById('successMessage').style.display = 'none';
-
-      // Показываем форму и стартовые кнопки
-      document.querySelector('form').style.display = 'block';
-      document.getElementById('mainButtons').style.display = 'block';
-
-      // Сброс формы и снятие выделения с кнопок
-      document.querySelector('form').reset();
-      document.querySelectorAll('.button-tile.selected').forEach(el => el.classList.remove('selected'));
-    });
-
-    // Анимация появления контейнера и заголовка
-    window.onload = () => {
-      document.querySelector('.container').style.opacity = '1';
-      document.querySelector('h2').style.opacity = '1';
-      document.querySelector('.logo').style.opacity = '1';
-      document.querySelector('button.submit').style.opacity = '1';
-    };
   </script>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+  function enforceSingleSelection(groupId) {
+    const group = document.querySelector(`#${groupId}`);
+    group.querySelectorAll('.button-tile').forEach(tile => {
+      tile.addEventListener('click', () => {
+        group.querySelectorAll('.button-tile').forEach(btn => btn.classList.remove('selected'));
+        tile.classList.add('selected');
+      });
+    });
+  }
+
+  // Одиночный выбор
+  enforceSingleSelection('days');
+  enforceSingleSelection('source');
+
+  // Множественный выбор
+  const multiTiles = document.querySelectorAll('#goals .button-tile');
+  multiTiles.forEach(tile => {
+    tile.addEventListener('click', () => {
+      tile.classList.toggle('selected');
+    });
+  });
+</script>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    function enforceSingleSelection(groupId) {
+      const group = document.querySelector(`#${groupId}`);
+      group.querySelectorAll('.button-tile').forEach(tile => {
+        tile.addEventListener('click', () => {
+          group.querySelectorAll('.button-tile').forEach(btn => btn.classList.remove('selected'));
+          tile.classList.add('selected');
+        });
+      });
+    }
+
+    // Одиночный выбор
+    enforceSingleSelection('days');
+    enforceSingleSelection('source');
+
+    // Множественный выбор
+    const multiTiles = document.querySelectorAll('#goals .button-tile');
+    multiTiles.forEach(tile => {
+      tile.addEventListener('click', () => {
+        tile.classList.toggle('selected');
+      });
+    });
+  });
+</script>
+
 </body>
+
 </html>
