@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -113,12 +112,11 @@
   }
 
   .button-tile {
-  text-align: center;
+    text-align: center;
     padding: 12px;
     border-radius: 12px;
     background: #e3f2fd;
     color: #333;
-    text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 500;
@@ -303,61 +301,8 @@
       }
 
       tg.sendData(JSON.stringify(data));
-      tg.close();
+      setTimeout(() => tg.close(), 300);
     });
   </script>
-
-<script>
-  function enforceSingleSelection(groupId) {
-    const group = document.querySelector(`#${groupId}`);
-    group.querySelectorAll('.button-tile').forEach(tile => {
-      tile.addEventListener('click', () => {
-        group.querySelectorAll('.button-tile').forEach(btn => btn.classList.remove('selected'));
-        tile.classList.add('selected');
-      });
-    });
-  }
-
-  // Одиночный выбор
-  enforceSingleSelection('days');
-  enforceSingleSelection('source');
-
-  // Множественный выбор
-  const multiTiles = document.querySelectorAll('#goals .button-tile');
-  multiTiles.forEach(tile => {
-    tile.addEventListener('click', () => {
-      tile.classList.toggle('selected');
-    });
-  });
-</script>
-
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    function enforceSingleSelection(groupId) {
-      const group = document.querySelector(`#${groupId}`);
-      group.querySelectorAll('.button-tile').forEach(tile => {
-        tile.addEventListener('click', () => {
-          group.querySelectorAll('.button-tile').forEach(btn => btn.classList.remove('selected'));
-          tile.classList.add('selected');
-        });
-      });
-    }
-
-    // Одиночный выбор
-    enforceSingleSelection('days');
-    enforceSingleSelection('source');
-
-    // Множественный выбор
-    const multiTiles = document.querySelectorAll('#goals .button-tile');
-    multiTiles.forEach(tile => {
-      tile.addEventListener('click', () => {
-        tile.classList.toggle('selected');
-      });
-    });
-  });
-</script>
-
 </body>
-
 </html>
