@@ -310,13 +310,8 @@
     submitBtn.disabled = true;
     submitBtn.textContent = "Отправка...";
 
-    // Отправляем данные в Telegram Web App
     tg.sendData(JSON.stringify(data));
-
-    // Даём задержку, чтобы отправка успела завершиться
-    setTimeout(() => {
-      tg.close();
-    }, 500); // полсекунды задержки
+    tg.close();
   });
 </script>
 </body>
