@@ -1,313 +1,50 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Запись на занятие</title>
-  
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Анкета</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
-    color: #222;
-  }
-
-  .container {
-    max-width: 700px;
-    margin: 50px auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-    animation: fadeInUp 1s ease forwards;
-    opacity: 0;
-  }
-
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  h2 {
-    text-align: center;
-    color: #2c3e50;
-    font-size: 28px;
-    margin-bottom: 25px;
-    animation: fadeIn 1.5s ease 0.3s forwards;
-    opacity: 0;
-  }
-
-  .logo {
-    text-align: center;
-    margin-bottom: 20px;
-    animation: slideDown 1s ease forwards;
-    opacity: 0;
-  }
-
-  .logo img {
-    width: 100%;
-    max-width: 360px;
-    height: auto;
-    transition: transform 0.4s ease;
-    border-radius: 16px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  }
-
-  .logo img:hover {
-    transform: scale(1.04);
-  }
-
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeIn {
-    to { opacity: 1; }
-  }
-
-  label {
-    display: block;
-    margin-top: 20px;
-    font-weight: 600;
-    color: #333;
-  }
-
-  input, textarea {
-    width: 100%;
-    padding: 12px;
-    margin-top: 6px;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    resize: none;
-    transition: box-shadow 0.3s ease;
-  }
-
-  input:focus, textarea:focus {
-    box-shadow: 0 0 0 2px #42a5f5aa;
-    outline: none;
-  }
-
-  .button-group-vertical,
-  .button-group-grid {
-    margin-top: 10px;
-    display: grid;
-    gap: 10px;
-  }
-
-  .button-group-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .button-group-vertical {
-    grid-template-columns: 1fr;
-  }
-
-  .button-tile {
-    text-align: center;
-    padding: 12px;
-    border-radius: 12px;
-    background: #e3f2fd;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  }
-
-  .button-tile:hover {
-    background: #bbdefb;
-    transform: scale(1.02);
-  }
-
-  .button-tile.selected {
-    background: #42a5f5;
-    color: white;
-    font-weight: bold;
-    transform: scale(1.05);
-  }
-
-  .checkbox-wrapper {
-    display: flex;
-    align-items: flex-start;
-    margin-top: 20px;
-  }
-
-  .checkbox-wrapper input[type="checkbox"] {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #42a5f5;
-    border-radius: 4px;
-    position: relative;
-    cursor: pointer;
-    margin-right: 10px;
-    margin-top: 3px;
-    flex-shrink: 0;
-  }
-
-  .checkbox-wrapper input[type="checkbox"]:checked {
-    background-color: #42a5f5;
-  }
-
-  .checkbox-wrapper input[type="checkbox"]:checked::after {
-    content: '';
-    position: absolute;
-    left: 5px;
-    top: 1px;
-    width: 6px;
-    height: 12px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-  }
-
-  .checkbox-wrapper label {
-    font-size: 14px;
-    font-style: normal;
-    color: #444;
-    line-height: 1.5;
-    margin: 0;
-  }
-
-  button.submit {
-    width: 100%;
-    margin-top: 30px;
-    padding: 16px;
-    font-size: 18px;
-    background: #42a5f5;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    animation: fadeIn 1s ease 0.4s forwards;
-    opacity: 0;
-  }
-
-  button.submit:hover {
-    background: #1e88e5;
-    transform: scale(1.02);
-  }
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  input, textarea { width: 100%; margin-bottom: 10px; padding: 8px; font-size: 16px; }
+  button { padding: 10px; font-size: 16px; width: 100%; cursor: pointer; }
 </style>
-
 </head>
 <body>
-  <div class="container">
-    <div class="logo">
-      <img src="https://i.ibb.co/TxRVvjpq/IMG-20250708-214806-835.png" alt="Логотип" />
-    </div>
-    <h2>📋 Запись на занятия</h2>
-    <form>
-      <label>ФИО родителя (законного представителя):</label>
-      <input type="text" required />
 
-      <label>Контактный телефон для связи:</label>
-      <input type="tel" required />
+<h2>Заполни анкету</h2>
+<form id="form">
+  <input type="text" id="parent" placeholder="ФИО родителя" required />
+  <input type="tel" id="phone" placeholder="Телефон" required />
+  <input type="number" id="age" placeholder="Возраст ребенка" required />
+  <textarea id="comment" placeholder="Комментарий"></textarea>
+  <label><input type="checkbox" id="consent" /> Согласен на обработку данных</label>
+  <br /><br />
+  <button type="submit">Отправить</button>
+</form>
 
-      <label>Возраст ребёнка:</label>
-      <input type="number" required />
-
-      <label>Имеются ли у ребёнка противопоказания к физическим нагрузкам?</label>
-      <textarea rows="2"></textarea>
-
-      <label>Опыт занятий спортом (указать каким если имеется):</label>
-      <textarea rows="2"></textarea>
-
-      <label>Цель записи на занятия (можно выбрать несколько):</label>
-      <div class="button-group-grid" id="goals">
-        <div class="button-tile">Общее физическое развитие</div>
-        <div class="button-tile">Самооборона и дисциплина</div>
-        <div class="button-tile">Спортивная карьера</div>
-        <div class="button-tile">Психологический рост</div>
-        <div class="button-tile">Социализация ребенка</div>
-        <div class="button-tile">Изучение восточные боевых искусств</div>
-        <div class="button-tile">Эмоциональная регуляция</div>
-        <div class="button-tile">Другое</div>
-      </div>
-
-      <label>Выберите удобный день для записи:</label>
-      <div class="button-group-vertical" id="days">
-        <div class="button-tile">Понедельник (18:00-19:20)</div>
-        <div class="button-tile">Среда (18:00-19:20)</div>
-        <div class="button-tile">Пятница (18:00-19:20)</div>
-      </div>
-
-      <label>Как вы узнали о нас?</label>
-      <div class="button-group-grid" id="source">
-        <div class="button-tile">Социальные сети</div>
-        <div class="button-tile">Реклама в интернете</div>
-        <div class="button-tile">Рекомендация друзей</div>
-        <div class="button-tile">Другой способ</div>
-      </div>
-
-      <label>Дополнительная информация:</label>
-      <textarea rows="3"></textarea>
-
-      <label>Согласие на обработку персональных данных:</label>
-      <div class="checkbox-wrapper">
-        <input type="checkbox" required />
-        <label><em>я даю согласие на обработку персональных данных</em> в соответствии с федеральным законом №152-ФЗ "О персональных данных" от 27.07.2006 г.</label>
-      </div>
-
-      <button type="submit" class="submit">Записаться</button>
-    </form>
-  </div>
-
-  <script>
-    document.querySelectorAll('.button-tile').forEach(tile => {
-      tile.addEventListener('click', () => {
-        tile.classList.toggle('selected');
-      });
-    });
-  </script>
-
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script>
+<script>
   const tg = window.Telegram.WebApp;
 
-  document.querySelector('.submit').addEventListener('click', function(e) {
+  document.getElementById("form").addEventListener("submit", function(e) {
     e.preventDefault();
 
-    // Сбор данных, например
-    const getSelected = (selector) => {
-      return Array.from(document.querySelectorAll(selector + ' .button-tile.selected'))
-                  .map(el => el.textContent.trim());
-    };
-
     const data = {
-      parent: document.querySelectorAll('input')[0].value.trim(),
-      phone: document.querySelectorAll('input')[1].value.trim(),
-      age: document.querySelectorAll('input')[2].value.trim(),
-      contraindications: document.querySelectorAll('textarea')[0].value.trim(),
-      sport_experience: document.querySelectorAll('textarea')[1].value.trim(),
-      goals: getSelected('#goals'),
-      days: getSelected('#days'),
-      source: getSelected('#source'),
-      comment: document.querySelectorAll('textarea')[2].value.trim(),
-      consent: document.querySelector('input[type="checkbox"]').checked
+      parent: document.getElementById("parent").value,
+      phone: document.getElementById("phone").value,
+      age: document.getElementById("age").value,
+      comment: document.getElementById("comment").value,
+      consent: document.getElementById("consent").checked
     };
 
     if (!data.consent) {
-      alert("❗ Необходимо дать согласие на обработку персональных данных.");
+      alert("Нужно согласиться на обработку данных");
       return;
     }
 
-    // Отправляем данные в бота
     tg.sendData(JSON.stringify(data));
-
-    // Закрываем WebApp с небольшой задержкой, чтобы данные успели отправиться
-    setTimeout(() => {
-      tg.close();
-    }, 500);
+    setTimeout(() => tg.close(), 300);
   });
 </script>
 
